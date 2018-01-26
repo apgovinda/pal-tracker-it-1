@@ -1,5 +1,3 @@
-
- 
 using Microsoft.AspNetCore.Mvc;
 
 namespace PalTracker
@@ -7,13 +5,14 @@ namespace PalTracker
     [Route("/")]
     public class WelcomeController : ControllerBase
     {
-        [HttpGet]
-        public string SayHello()
-        {
-           //HttpRequest request =   HttpContext.Request;
-           //return "the url you had hit is : " + request.Host.Value ;
+        private readonly WelcomeMessage _message;
 
-           return "hello";
+        [HttpGet]
+        public string SayHello() => _message.GetMessage();
+
+        public WelcomeController(WelcomeMessage message)
+        {
+            _message = message;
         }
     }
 }
