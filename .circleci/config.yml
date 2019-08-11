@@ -32,6 +32,16 @@ jobs:
           at: artifacts
       - run:
           name: Install CF CLI
+      - run:
+          name: Install jq
+          command: |
+           apt-get -y install jq
+
+      - run:
+          name: Install flyway
+          command: |
+            curl https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/5.1.1/flyway-commandline-5.1.1-linux-x64.tar.gz | tar xvz
+
           command: |
             apt-get update
             apt-get -y install apt-transport-https ca-certificates
@@ -53,6 +63,7 @@ jobs:
 
             cf login -a $CF_API -u "$CF_USERNAME" -p "$CF_PASSWORD" -o "$CF_ORG" -s "$CF_SPACE_REVIEW"
             cf push -f manifest-$ENVIRONMENT.yml
+            bash ./migrate-databases.sh pal-tracker-review . /root/project
 
   deployToProd:
     docker:
@@ -66,6 +77,16 @@ jobs:
           at: artifacts
       - run:
           name: Install CF CLI
+      - run:
+          name: Install jq
+          command: |
+            apt-get -y install jq
+
+      - run:
+          name: Install flyway
+          command: |
+            curl https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/5.1.1/flyway-commandline-5.1.1-linux-x64.tar.gz | tar xvz
+
           command: |
             apt-get update
             apt-get -y install apt-transport-https ca-certificates
@@ -87,7 +108,7 @@ jobs:
 
             cf login -a $CF_API -u "$CF_USERNAME" -p "$CF_PASSWORD" -o "$CF_ORG" -s "$CF_SPACE_PROD"
             cf push -f manifest-$ENVIRONMENT.yml
-
+            bash ./migrate-databases.sh pal-tracker-prod . /root/project
 workflows:
   version: 2
   deployment-pipeline:
