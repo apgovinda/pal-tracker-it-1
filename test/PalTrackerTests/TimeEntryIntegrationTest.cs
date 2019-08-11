@@ -12,9 +12,7 @@ namespace PalTrackerTests
     [Collection("Integration")]
     public class TimeEntryIntegrationTest
     {
-
         private readonly HttpClient _testClient;
-
         public TimeEntryIntegrationTest()
         {
             Environment.SetEnvironmentVariable("MYSQL__CLIENT__CONNECTIONSTRING", DbTestSupport.TestDbConnectionString);
